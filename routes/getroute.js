@@ -18,10 +18,11 @@ router.get("/", (req, res) => {
 
 //add data to excel
 router.post("/submit", (req, res) => {
-  res.send(req.body);
+  //res.send(req.body);
   let str = JSON.parse(JSON.stringify(req.body));
   console.log(str);
   convertJsonToExcel(str);
+  res.redirect("http://localhost:5000/");
 });
 
 //display data
