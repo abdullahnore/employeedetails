@@ -22,6 +22,7 @@ router.post("/submit", (req, res) => {
   let str = JSON.parse(JSON.stringify(req.body));
   console.log(str);
   convertJsonToExcel(str);
+  sett;
   res.redirect("http://localhost:5000/");
 });
 
