@@ -1,0 +1,28 @@
+ const content = [
+    { name: "Raj", email: "raj@gmail.com", age: 23, gender: "M" },
+    { name: "Rahul", email: "rahul@gmail.com", age: 15, gender: "M" }
+]
+ 
+  let newWb = xlsx.utils.book_new(); //create workbook
+
+  let worksheet = xlsx.utils.json_to_sheet(content); //worsheet creat
+  // append worksheet to workbook
+  xlsx.utils.book_append_sheet(newWb, worksheet, "eDetails");
+
+  //write data to excel
+  xlsx.writeFile(newWb, "newdetails.xlsx");
+
+  // sheet to json
+  console.log("fileExist");
+    const workbookADD = xlsx.readFile("./newdetails.xlsx"); //read excel file
+    // read sheet from work book
+    let wbdata = workbookADD.Sheets["eDetails"];
+    //convert to json
+    const sheetDetails = xlsx.utils.sheet_to_json(wbdata);
+    //console.log(sheetDetails);
+    // modify xml data
+    let data = {
+      name: "new",
+    };
+    sheetDetails.push(data);
+    console.log(JSON.stringify(sheetDetails));
