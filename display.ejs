@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>employee table</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.3.min.js"
+      integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css"
+    />
+
+    <style>
+      #table-data,
+      td,
+      tr,
+      th {
+        border: 2px solid;
+
+        background-color: lightgray;
+        padding: 15px;
+        margin: 15px;
+        text-align: center;
+      }
+      #table-data {
+        border-collapse: collapse;
+        margin: 0 auto;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <table id="table-data">
+      <caption>
+        employee detail
+        <br />
+        <label for="check">Click to sort in Desc</label>
+        <input type="checkbox" id="check" />
+        <br />
+        <button onclick="uplpoadToSql()">upload</button>
+        <button onclick="downToSql() ">download</button>
+      </caption>
+      <thead>
+        <tr>
+          <% for (let x=0 ; x<=Object.keys(displayd[0]).length-1; x++ ) { %>
+          <th
+            onclick="myfunction(event)"
+            value="<%=Object.keys(displayd[0])[x] %>"
+          >
+            <%= Object.keys(displayd[0])[x] %>
+          </th>
+          <% } %>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(let x of displayd) { %>
+        <tr id="tablehead">
+          <td><%= x.name %></td>
+          <td><%= x.email %></td>
+          <td><%= x.phone %></td>
+          <td><%= x.address %></td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+    <script src="cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script>
+      function myfunction(e) {
+        let str = e.target.innerText;
+        let checkbox = document.getElementById("check");
+        if (checkbox.checked == true) {
+          let check = 1;
+          fetchdisplay(str, check);
+        } else {
+          fetchdisplay(str);
+        }
+      }
+
+      //fetch req
+      function fetchdisplay(str, check) {
+        console.log(str);
+        return fetch(`http://localhost:5000/display_data?id=${str}`)
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            if (check != 1) {
+              populatedata(data.display);
+            } else {
+              console.log("notworkin");
+              populatedatareverse(data.display);
+            }
+
+            //return data
+          });
+      }
+
+      function populatedata(newdata) {
+        console.log(newdata);
+        let tablehead = document.getElementById("table-data");
+
+        let rowcount = tablehead.rows.length;
+        console.log("row count", rowcount);
+        let Rows = tablehead.rows;
+
+        for (let i = 0; i < rowcount; i++) {
+          // console.log( Rows[i].innerText) ;
+          Rows[i + 1].cells[0].innerText = newdata[i].name;
+          Rows[i + 1].cells[1].innerText = newdata[i].email;
+          Rows[i + 1].cells[2].innerText = newdata[i].phone;
+          Rows[i + 1].cells[3].innerText = newdata[i].address;
+        }
+      }
+      function populatedatareverse(newdata) {
+        console.log(newdata);
+        let tablehead = document.getElementById("table-data");
+
+        let rowcount = tablehead.rows.length;
+        console.log("row count", rowcount);
+        let Rows = tablehead.rows;
+        Rows[5].cells[0].innerText = newdata[0].name;
+        let j = 0;
+        for (let i = rowcount; i > 0; i--) {
+          Rows[i - 1].cells[0].innerText = newdata[j].name;
+          Rows[i - 1].cells[1].innerText = newdata[j].email;
+          Rows[i - 1].cells[2].innerText = newdata[j].phone;
+          Rows[i - 1].cells[3].innerText = newdata[j].address;
+          j++;
+        }
+      }
+      function uplpoadToSql() {
+        return fetch("http://localhost:5000/upload").then((response) => {
+          return response;
+        });
+      }
+      function downToSql() {
+        return fetch("http://localhost:5000/download").then((response) => {
+          return response;
+        });
+      }
+      // datatable
+      $(document).ready(function () {
+        $("#table-data").DataTable({
+          ordering: false,
+        });
+      });
+    </script>
+  </body>
+</html>
