@@ -49,31 +49,31 @@
       </caption>
       <thead>
         <tr>
-          <% for (let x=0 ; x<=Object.keys(displayd[0]).length-1; x++ ) { %>
+          <% for (let x=0 ; x<= Object.keys(displayd[0]).length-1; x++ ) { %>
           <th
             onclick="myfunction(event)"
-            value="<%=Object.keys(displayd[0])[x] %>"
+            value="<%= Object.keys(displayd[0])[x] %>"
           >
             <%= Object.keys(displayd[0])[x] %>
           </th>
           <% } %>
         </tr>
       </thead>
-      <tbody>
-        <% for(let x of displayd) { %>
-        <tr id="tablehead">
-          <td><%= x.name %></td>
-          <td><%= x.email %></td>
-          <td><%= x.phone %></td>
-          <td><%= x.address %></td>
-        </tr>
-        <% } %>
-      </tbody>
+
+      <% for(let x of displayd) { %>
+      <tr>
+        <td><%= x.name %></td>
+        <td><%= x.email %></td>
+        <td><%= x.phone %></td>
+        <td><%= x.address %></td>
+      </tr>
+      <% } %>
     </table>
-    <script src="cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-    <script>
+
+    <script type="text/javascript">
       function myfunction(e) {
         let str = e.target.innerText;
+        //console.log(str);
         let checkbox = document.getElementById("check");
         if (checkbox.checked == true) {
           let check = 1;
@@ -85,9 +85,9 @@
 
       //fetch req
       function fetchdisplay(str, check) {
-        console.log(str);
+        console.log(`sort by :${str}`);
         return fetch(`http://localhost:5000/display_data?id=${str}`)
-          .then((response) => {
+          .then((response, err) => {
             return response.json();
           })
           .then((data) => {
@@ -103,7 +103,7 @@
       }
 
       function populatedata(newdata) {
-        console.log(newdata);
+        //console.log(newdata);
         let tablehead = document.getElementById("table-data");
 
         let rowcount = tablehead.rows.length;
@@ -119,7 +119,7 @@
         }
       }
       function populatedatareverse(newdata) {
-        console.log(newdata);
+        //console.log(newdata);
         let tablehead = document.getElementById("table-data");
 
         let rowcount = tablehead.rows.length;
@@ -149,6 +149,7 @@
       $(document).ready(function () {
         $("#table-data").DataTable({
           ordering: false,
+          searching: false,
         });
       });
     </script>

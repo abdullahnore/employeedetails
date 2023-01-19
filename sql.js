@@ -61,24 +61,30 @@ function insertAll() {
 //bulk upload
 function bulkUpload(rowcount) {
   let display = displaydata();
-
+  let rowint = parseInt(rowcount);
   let arrayouter = []; //store object in array
   let objLen = Object.keys(display).length;
+  let iterator;
   let objLendif = Math.abs(rowcount - Object.keys(display).length);
   if (objLendif > 100) {
     console.log("file  transaction too large :", objLen);
 
+    iterator = rowint + 100;
+
     console.log("file too large limiting transaction to :", 100);
   } else {
     console.log(" number of transactions :", objLen);
+    iterator = objLen;
   }
 
   console.log("obj", objLen, "row", rowcount, "diff", objLendif);
-  let count = 0;
-  let hun = parseInt(rowcount) + 100;
-  for (let i = rowcount; i < objLendif && i < hun; i++) {
-    let array = [];
 
+  let count = 0;
+  //console.log(display);
+  for (let i = rowint; i < iterator; i++) {
+    let array = [];
+    count++;
+    console.log("row", rowint, "diff", objLendif, "count:", count);
     array.push(display[i].name);
     array.push(display[i].email);
     array.push(display[i].phone);
@@ -86,7 +92,7 @@ function bulkUpload(rowcount) {
     arrayouter.push(array);
   }
 
-  //console.log(arrayouter);
+  console.log(arrayouter);
   let sql = "INSERT INTO edetails  (name,email,phone,address) VALUES ?";
   db.query(sql, [arrayouter], (err, result) => {
     if (err) {
@@ -96,6 +102,7 @@ function bulkUpload(rowcount) {
     console.log("data added bulk ");
   });
 }
+
 // // check if empty and perform action
 // function checkIfEmpty() {
 //   let sql = "SELECT EXISTS(SELECT * FROM edetails) as EX";
@@ -150,7 +157,7 @@ function sqlJson(results) {
   }
 
   //console.log("new", newdata);
-  console.log(sqlsheet);
+  //console.log(sqlsheet);
 
   let newWb = xlsx.utils.book_new(); //create workbook
   let worksheet = xlsx.utils.json_to_sheet(sqlsheet); //worsheet creat

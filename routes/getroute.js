@@ -18,11 +18,10 @@ router.get("/", (req, res) => {
 
 //add data to excel
 router.post("/submit", (req, res) => {
-  //res.send(req.body);
+  res.send(req.body);
   let str = JSON.parse(JSON.stringify(req.body));
-  console.log(str);
+  //console.log(str);
   convertJsonToExcel(str);
-  sett;
   res.redirect("http://localhost:5000/");
 });
 
@@ -38,11 +37,10 @@ router.get("/display", (req, res) => {
 });
 router.get("/display_data", (req, res) => {
   let s = url.parse(req.url, true);
-
   s = new URLSearchParams(s.search);
   let data = getParams(s);
   let displaysort = sortData(data);
-  console.log(displaysort);
+  //console.log(displaysort);
   res.status(200).send({
     display: displaysort,
   });

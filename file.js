@@ -8,14 +8,11 @@ let checkemail = (data, sheetDetails) => {
     }
   }
 };
-function isEmpty(data) {
-  if (
-    Object.values(data.name.split(" ")) == "" ||
-    Object.values(data.email.split(" ")) == ""
-  ) {
-    throw console.log(" name and email should not be empty");
-  }
-}
+// function isEmpty(data) {
+//   if (Object.values(data.email.split(" ")) == "") {
+//     throw console.log("email should not be empty");
+//   }
+// }
 
 const displaydata = () => {
   const workbookADD = xlsx.readFile("./newdetails.xlsx"); //read excel file
@@ -36,8 +33,8 @@ const convertExcelToJson = (data) => {
   //convert to json
   const sheetDetails = xlsx.utils.sheet_to_json(wbdata);
 
-  //check if data empty
-  isEmpty(data);
+  // //check if data empty
+  // isEmpty(data);
 
   //check if email exist
   checkemail(data, sheetDetails);
