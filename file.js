@@ -77,7 +77,9 @@ function getParams(s) {
 }
 //sort data
 function sortData(data) {
+  console.log(data);
   let sheetDetails = displaydata();
+  console.log("new", sheetDetails);
   sheetDetails = sheetDetails.sort(customsort(data));
   return sheetDetails;
 }

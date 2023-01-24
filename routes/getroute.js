@@ -40,7 +40,7 @@ router.get("/display_data", (req, res) => {
   s = new URLSearchParams(s.search);
   let data = getParams(s);
   let displaysort = sortData(data);
-  //console.log(displaysort);
+  console.log(displaysort);
   res.status(200).send({
     display: displaysort,
   });
